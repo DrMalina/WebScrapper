@@ -1,21 +1,43 @@
 const puppeteer = require("puppeteer");
-const WEBSITE_URL = "https://www.olx.pl/oferty/q-banknot-19zł/";
+const WEBSITE_URL = "https://www.olx.pl/oferty/q-Banknot-19-z%C5%82/";
 
 const olx = {
   browser: null,
   page: null,
+  results: [],
 
   initialize: async () => {
     olx.browser = await puppeteer.launch({ headless: false });
     olx.page = await olx.browser.newPage();
 
     //go to page, wait for loading
-    await olx.page.goto(WEBSITE_URL);
+    await olx.page.goto(WEBSITE_URL), { waitUntil: "networkidle0" };
+  },
+
+  getResults: async () => {
+    let newResults = await olx.parseResults(); //results from each page
+    olx.results = [...olx.results, ...newResults];
+
+    const nextPageBtn = await olx.page.$(
+      "span.next > a[data-cy='page-link-next']"
+    );
+
+    if (nextPageBtn) {
+      //if next btn = next page exists, open it and repeat functions
+      try {
+        await nextPageBtn.click();
+        await olx.page.waitForNavigation({ waitUntil: "networkidle0" });
+        await olx.getResults();
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      await olx.browser.close();
+      return;
+    }
   },
 
   parseResults: async () => {
-    let results = [];
-
     const offersHandler = await olx.page.$$("#offers_table > tbody > tr.wrap");
 
     const offersData = offersHandler.map(async offer => {
@@ -38,13 +60,16 @@ const olx = {
         el => el.parentNode.innerText
       );
 
-      results.push({ title, price, url, location, time });
+      return { title, price, url, location, time };
     });
 
-    await Promise.all(offersData);
-    olx.browser.close();
+    const parsedResults = await Promise.all(offersData);
 
-    console.log(results);
+    return parsedResults;
+  },
+
+  returnAllResults: () => {
+    return olx.results;
   }
 };
 
