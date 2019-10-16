@@ -22,8 +22,8 @@ const olx = {
       "span.next > a[data-cy='page-link-next']"
     );
 
+    //if next btn = next page exists, open it and repeat functions
     if (nextPageBtn) {
-      //if next btn = next page exists, open it and repeat functions
       try {
         await nextPageBtn.click();
         await olx.page.waitForNavigation({ waitUntil: "networkidle0" });
