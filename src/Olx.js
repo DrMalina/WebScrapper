@@ -1,24 +1,26 @@
 const puppeteer = require("puppeteer");
 const WEBSITE_URL = "https://www.olx.pl/oferty/q-Banknot-19-z%C5%82/";
 
-const olx = {
-  browser: null,
-  page: null,
-  results: [],
+class OLX {
+  constructor() {
+    this.browser = null;
+    this.page = null;
+    this.results = [];
+  }
 
-  initialize: async () => {
-    olx.browser = await puppeteer.launch({ headless: false });
-    olx.page = await olx.browser.newPage();
+  async initialize() {
+    this.browser = await puppeteer.launch({ headless: false });
+    this.page = await this.browser.newPage();
 
     //go to page, wait for loading
-    await olx.page.goto(WEBSITE_URL), { waitUntil: "networkidle0" };
-  },
+    await this.page.goto(WEBSITE_URL), { waitUntil: "networkidle0" };
+  }
 
-  getResults: async () => {
-    let newResults = await olx.parseResults(); //results from each page
-    olx.results = [...olx.results, ...newResults];
+  async getResults() {
+    let newResults = await this.parseResults(); //results from each page
+    this.results = [...this.results, ...newResults];
 
-    const nextPageBtn = await olx.page.$(
+    const nextPageBtn = await this.page.$(
       "span.next > a[data-cy='page-link-next']"
     );
 
@@ -26,19 +28,19 @@ const olx = {
     if (nextPageBtn) {
       try {
         await nextPageBtn.click();
-        await olx.page.waitForNavigation({ waitUntil: "networkidle0" });
-        await olx.getResults();
+        await this.page.waitForNavigation({ waitUntil: "networkidle0" });
+        await this.getResults();
       } catch (err) {
         console.log(err);
       }
     } else {
-      await olx.browser.close();
+      await this.browser.close();
       return;
     }
-  },
+  }
 
-  parseResults: async () => {
-    const offersHandler = await olx.page.$$("#offers_table > tbody > tr.wrap");
+  async parseResults() {
+    const offersHandler = await this.page.$$("#offers_table > tbody > tr.wrap");
 
     const offersData = offersHandler.map(async offer => {
       const title = await offer.$eval(
@@ -66,11 +68,11 @@ const olx = {
     const parsedResults = await Promise.all(offersData);
 
     return parsedResults;
-  },
-
-  returnAllResults: () => {
-    return olx.results;
   }
-};
 
-module.exports = olx;
+  returnAllResults() {
+    return this.results;
+  }
+}
+
+module.exports = OLX;

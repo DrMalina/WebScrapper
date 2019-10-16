@@ -1,9 +1,10 @@
 const fs = require("fs");
-const olx = require("./olx");
+const OLX = require("./Olx");
 
 const FILE_NAME = "offers.json";
 
 (async () => {
+  const olx = new OLX();
   await olx.initialize();
   await olx.getResults();
   let results = olx.returnAllResults();
