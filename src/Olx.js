@@ -14,6 +14,7 @@ class OLX {
 
     //go to page, wait for loading
     await this.page.goto(WEBSITE_URL), { waitUntil: "networkidle0" };
+    await this.getResults();
   }
 
   async getResults() {
@@ -26,13 +27,9 @@ class OLX {
 
     //if next btn = next page exists, open it and repeat functions
     if (nextPageBtn) {
-      try {
-        await nextPageBtn.click();
-        await this.page.waitForNavigation({ waitUntil: "networkidle0" });
-        await this.getResults();
-      } catch (err) {
-        console.log(err);
-      }
+      await nextPageBtn.click();
+      await this.page.waitForNavigation({ waitUntil: "networkidle0" });
+      await this.getResults();
     } else {
       await this.browser.close();
       return;
