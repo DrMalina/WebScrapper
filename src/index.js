@@ -1,22 +1,30 @@
 const fs = require("fs");
-const OLX = require("./Olx");
+const Olx = require("./scrapper/Olx");
+const Allegro = require("./scrapper/Allegro");
 const { validate } = require("./helpers");
 
-const FILE_NAME = "offers.json";
-const olx = new OLX();
+const allegro = new Allegro();
+const olx = new Olx();
 
 (async () => {
   try {
     await olx.initialize();
-    let results = olx.returnAllResults();
+    await allegro.initialize();
+    let results = [...olx.returnAllResults(), ...allegro.returnAllResults()];
 
     results = validate(results);
 
-    fs.writeFile(FILE_NAME, JSON.stringify(results, null, 2), "utf-8", err => {
-      if (err) console.log(err);
-      console.log("File has been saved!");
-    });
+    fs.writeFile(
+      "offers.json",
+      JSON.stringify(results, null, 2),
+      "utf-8",
+      err => {
+        if (err) console.log(err);
+        console.log("File has been saved!");
+        console.log(`Results: ${results.length}`);
+      }
+    );
   } catch (err) {
-    console.log(`Something wrong... ${err}`);
+    console.log(` Hey, Something wrong... ${err}`);
   }
 })();

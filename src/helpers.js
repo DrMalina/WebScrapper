@@ -10,9 +10,11 @@ function convertPrice(price) {
 }
 
 //only show single offers (not set or multiple items for one high price)
-function validateTitle(title) {
+function validateTitle(titleRaw) {
+  //must not contain ANY of those
   const KEY_FLAGS = [
     "banknoty",
+    "banknotów",
     "x",
     "zestaw",
     "pakiet",
@@ -20,24 +22,30 @@ function validateTitle(title) {
     "szt.",
     "sztuk",
     "sztuki",
-    "znaczek"
+    "znaczek",
+    "magnes"
   ];
 
-  for (let i = 0; i <= KEY_FLAGS.length - 1; i++) {
-    if (title.toLowerCase().includes(KEY_FLAGS[i])) {
-      return false;
-    }
-  }
+  //must contain AT LEAST 1 of those
+  const KEY_WORDS = ["zł", "zl", "złotych", "zlotych"];
+
+  let title = titleRaw.toLowerCase();
+
+  //TODO:validation
 
   return true;
 }
 
+//validate offers => return offers only if they meet conditions
 function validate(array) {
-  //validate offers => return offers only if they meet conditions
   let filteredArr = array.filter(
-    //title must not contain any KEY FLAGS
-    //PRICE must not be NaN => OLX has 'Change' (PL: Zamienię) option to put instead of amount
-    offer => validateTitle(offer.title) && convertPrice(offer.price)
+    //TITLE must not contain any KEY FLAGS and must contain KEY WORDS
+    //PRICE must not be NaN =>e.g. OLX has 'Change' (PL: Zamienię) option to put instead of amount
+    //TYPE must be 'purchase' not auction
+    offer =>
+      validateTitle(offer.title) &&
+      convertPrice(offer.price) &&
+      offer.type === "purchase"
   );
 
   //convert price on each offer

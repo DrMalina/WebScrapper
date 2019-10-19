@@ -19,7 +19,7 @@ class Scrapper {
 
   async initialize() {
     try {
-      this.browser = await puppeteer.launch({ headless: false });
+      this.browser = await puppeteer.launch({ headless: true });
       this.page = await this.browser.newPage();
 
       //go to page, wait for loading
@@ -127,9 +127,11 @@ class Scrapper {
             el => el.parentNode.innerText
           );
 
+          const type = "purchase";
+
           const source = "olx";
 
-          return { title, price, url, location, date, source };
+          return { title, price, url, location, date, source, type };
         });
 
         const parsedResults = await Promise.all(offersData);
