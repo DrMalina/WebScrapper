@@ -1,23 +1,16 @@
 //only show single offers (not set or multiple items for one high price)
 function validateTitle(titleRaw) {
-  const title = titleRaw.toLowerCase();
   //TODO: regex can be shortened
+  const title = titleRaw.toLowerCase();
+
+  //must NOT contain
   const reFLAGS = /szt\b|szt.\B|sztuk\b|sztuki\b|\bbanknotów\b|\bbanknoty\b|x|\bzestaw\b|\bpakiet\b|\bznaczek\b|\bmagnes\b/g;
+  //must contain
   const reKEY_WORDS = /zł\B|zl\b|z[lł]otych\b/gm;
-  /* 
-  //must not contain ANY of those
-    FLAGS:
-    "banknoty",  "banknotów", "x", "zestaw",
-    "pakiet", "szt", "szt.", "sztuk", "sztuki",
-    "znaczek", "magnes"
-    
-  //must contain AT LEAST 1 of those
-    KEY WORDS: "zł", "zl", "złotych", "zlotych"
-   */
-  return reKEY_WORDS.test(title) && !reFLAGS.test(title); //KEY WORDS must be TRUE, FLAGS must be FALSE
+
+  return reKEY_WORDS.test(title) && !reFLAGS.test(title);
 }
 
-//check if correct amount => sometimes might be 'Exchange' option (PL:"Zamienie") instead of amount
 function validatePrice(priceRaw) {
   return priceRaw.includes("zł");
 }
@@ -37,12 +30,9 @@ function convertPrice(price) {
   return Number(rawValue);
 }
 
-//validate offers => return offers only if they meet conditions
+//return offers only if they meet conditions
 function validate(array) {
   let filteredArr = array.filter(
-    //TITLE must not contain any KEY FLAGS and must contain KEY WORDS
-    //PRICE must not be NaN =>e.g. OLX has 'Change' (PL: Zamienię) option to put instead of amount
-    //TYPE must be 'purchase' not auction
     offer =>
       validateTitle(offer.title) &&
       validatePrice(offer.price) &&

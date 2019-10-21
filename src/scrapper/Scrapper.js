@@ -1,38 +1,24 @@
 const puppeteer = require("puppeteer");
 const chalk = require("chalk");
-const URL_ALLEGRO =
-  "https://allegro.pl/listing?string=Banknot%2019%20z%C5%82&offerTypeBuyNow=1&bmatch=baseline-nbn-dict42-col-1-1-1002";
-const URL_OLX = "https://www.olx.pl/oferty/q-Banknot-19-z%C5%82/";
 
 class Scrapper {
-  constructor(website) {
+  constructor(website, url) {
     this.browser = null;
     this.page = null;
     this.results = [];
     this.website = website;
-
-    if (this.website === "allegro") {
-      this.url = URL_ALLEGRO;
-    } else {
-      this.url = URL_OLX;
-    }
+    this.url = url;
   }
 
   async initialize() {
     try {
-      this.browser = await puppeteer.launch({ headless: true });
+      this.browser = await puppeteer.launch();
       this.page = await this.browser.newPage();
 
-      //go to page, wait for loading
       await this.page.goto(this.url), { waitUntil: "networkidle0" };
       await this.getResults();
-      console.log(
-        "Fetched results from:" + chalk.green(` ${this.website.toUpperCase()}`)
-      );
     } catch (err) {
-      console.log(
-        chalk.red("Something wrong with initializing:" + `\n ${err}`)
-      );
+      console.log(chalk`Something wrong with {red initializing} \n${err}`);
     }
   }
 
@@ -41,7 +27,7 @@ class Scrapper {
       let newResults = await this.parseResults(); //results from each page
       this.results = [...this.results, ...newResults];
 
-      const nextPageBtn = await this.page.$(query); // different query for Allegro and Olx
+      const nextPageBtn = await this.page.$(query);
 
       //if next btn = next page exists, open it and repeat functions
       if (nextPageBtn) {
@@ -57,12 +43,13 @@ class Scrapper {
       } else {
         //when no more pages to scrap, close and return
         await this.browser.close();
+        console.log(
+          chalk`Fetched results from: {yellow ${this.website.toUpperCase()}}`
+        );
         return;
       }
     } catch (err) {
-      console.log(
-        chalk.red("Something wrong with getting results:" + `\n ${err}`)
-      );
+      console.log(chalk`Something wrong with {red getting results} \n${err}`);
     }
   }
 
@@ -146,9 +133,7 @@ class Scrapper {
         return parsedResults;
       }
     } catch (err) {
-      console.log(
-        chalk.red("Something wrong with parsing results:" + `\n ${err}`)
-      );
+      console.log(chalk`Something wrong with {red parsing results} \n${err}`);
     }
   }
 
