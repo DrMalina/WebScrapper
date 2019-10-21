@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/DrMalina/WebScrapper#readme",
   "dependencies": {
+    "chalk": "^2.4.2",
     "puppeteer": "^1.20.0"
   },
   "devDependencies": {

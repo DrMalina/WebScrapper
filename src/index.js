@@ -1,4 +1,5 @@
 const fs = require("fs");
+const chalk = require("chalk");
 const Olx = require("./scrapper/Olx");
 const Allegro = require("./scrapper/Allegro");
 const { validate } = require("./helpers");
@@ -20,11 +21,11 @@ const olx = new Olx();
       "utf-8",
       err => {
         if (err) console.log(err);
-        console.log("File has been saved!");
-        console.log(`Results: ${results.length}`);
+        console.log(chalk.green("File has been saved!"));
+        console.log("Total results:" + chalk.green(` ${results.length}`));
       }
     );
   } catch (err) {
-    console.log(` Hey, Something wrong... ${err}`);
+    console.log(chalk.red(`There was an error: \n ${err}`));
   }
 })();

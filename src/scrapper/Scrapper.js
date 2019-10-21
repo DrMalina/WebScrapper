@@ -1,4 +1,5 @@
 const puppeteer = require("puppeteer");
+const chalk = require("chalk");
 const URL_ALLEGRO =
   "https://allegro.pl/listing?string=Banknot%2019%20z%C5%82&offerTypeBuyNow=1&bmatch=baseline-nbn-dict42-col-1-1-1002";
 const URL_OLX = "https://www.olx.pl/oferty/q-Banknot-19-z%C5%82/";
@@ -25,8 +26,13 @@ class Scrapper {
       //go to page, wait for loading
       await this.page.goto(this.url), { waitUntil: "networkidle0" };
       await this.getResults();
+      console.log(
+        "Fetched results from:" + chalk.green(` ${this.website.toUpperCase()}`)
+      );
     } catch (err) {
-      console.log(err);
+      console.log(
+        chalk.red("Something wrong with initializing:" + `\n ${err}`)
+      );
     }
   }
 
@@ -54,7 +60,9 @@ class Scrapper {
         return;
       }
     } catch (err) {
-      console.log(err);
+      console.log(
+        chalk.red("Something wrong with getting results:" + `\n ${err}`)
+      );
     }
   }
 
@@ -138,7 +146,9 @@ class Scrapper {
         return parsedResults;
       }
     } catch (err) {
-      console.log(err);
+      console.log(
+        chalk.red("Something wrong with parsing results:" + `\n ${err}`)
+      );
     }
   }
 
