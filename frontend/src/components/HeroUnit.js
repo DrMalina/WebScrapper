@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Button } from '@material-ui/core';
 
-const HeroUnit = () => {
+const HeroUnit = ({ handleClick }) => {
 	return (
 		<React.Fragment>
 			<Typography
@@ -30,6 +30,7 @@ const HeroUnit = () => {
 				variant="contained"
 				color="primary"
 				style={{ color: 'white', marginTop: '2rem' }}
+				onClick={() => handleClick()}
 			>
 				Get started
 			</Button>

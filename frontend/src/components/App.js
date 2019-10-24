@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CssBaseline, Container } from '@material-ui/core';
 import {
 	createMuiTheme,
@@ -10,6 +10,7 @@ import Header from './Header';
 import HeroUnit from './HeroUnit';
 import DetailedInfo from './DetailedInfo';
 import Footer from './Footer';
+import OffersData from './OffersData';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -19,19 +20,40 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center'
 	},
 	footer: {
-		marginTop: theme.spacing(12),
+		position: 'absolute',
+		bottom: 0,
+		maxWidth: '100%',
 		marginBottom: theme.spacing(4)
 	}
 }));
 
 const theme = createMuiTheme({
 	palette: {
-		primary: { main: '#48a684' }
+		primary: { main: '#48a684' },
+		secondary: { main: '#178454' }
 	}
 });
 
 const App = () => {
 	const classes = useStyles();
+	const [isFetchingData, startFetchingData] = useState(false);
+
+	const handleClick = () => {
+		startFetchingData(true);
+	};
+
+	const renderContent = () => {
+		if (!isFetchingData) {
+			return (
+				<React.Fragment>
+					<HeroUnit handleClick={handleClick} />
+					<DetailedInfo />
+				</React.Fragment>
+			);
+		} else {
+			return <OffersData />;
+		}
+	};
 
 	return (
 		<React.Fragment>
@@ -39,8 +61,7 @@ const App = () => {
 				<CssBaseline />
 				<Header />
 				<Container maxWidth="md" component="main" className={classes.container}>
-					<HeroUnit />
-					<DetailedInfo />
+					{renderContent()}
 				</Container>
 				<Container maxWidth="sm" component="footer" className={classes.footer}>
 					<Footer />

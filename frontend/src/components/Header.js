@@ -13,10 +13,10 @@ const Header = () => {
 					style={{ flex: 1 }}
 				>
 					<Link
-						component="button"
 						variant="h6"
 						underline="none"
 						style={{ color: 'white' }}
+						href="#"
 					>
 						Banknote Collector Tracker
 					</Link>
