@@ -62,6 +62,7 @@ const DetailedInfo = () => {
 					<Link
 						href="https://bezprawnik.pl/banknot-19-zl-cena/"
 						rel="noreferrer"
+						target="_blank"
 						variant="inherit"
 						style={{ color: '#144a91', fontStyle: 'italic' }}
 					>

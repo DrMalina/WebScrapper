@@ -9,6 +9,7 @@ import {
 import Header from './Header';
 import HeroUnit from './HeroUnit';
 import DetailedInfo from './DetailedInfo';
+import Footer from './Footer';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -16,6 +17,10 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		flexDirection: 'column',
 		alignItems: 'center'
+	},
+	footer: {
+		marginTop: theme.spacing(12),
+		marginBottom: theme.spacing(4)
 	}
 }));
 
@@ -36,6 +41,9 @@ const App = () => {
 				<Container maxWidth="md" component="main" className={classes.container}>
 					<HeroUnit />
 					<DetailedInfo />
+				</Container>
+				<Container maxWidth="sm" component="footer" className={classes.footer}>
+					<Footer />
 				</Container>
 			</ThemeProvider>
 		</React.Fragment>
