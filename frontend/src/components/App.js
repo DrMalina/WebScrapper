@@ -7,10 +7,10 @@ import {
 } from '@material-ui/core/styles';
 
 import Header from './Header';
-import HeroUnit from './HeroUnit';
-import DetailedInfo from './DetailedInfo';
+import HeroUnit from './pages/startingPage/HeroUnit';
+import DetailedInfo from './pages/startingPage/DetailedInfo';
 import Footer from './Footer';
-import OffersData from './OffersData';
+import OffersData from './pages/offersResultsPage/OffersData';
 
 const useStyles = makeStyles(theme => ({
 	container: {
@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => ({
 	},
 	footer: {
 		position: 'absolute',
-		bottom: 0,
 		maxWidth: '100%',
-		marginBottom: theme.spacing(4)
+		paddingBottom: theme.spacing(4),
+		marginTop: theme.spacing(6)
 	}
 }));
 
@@ -45,13 +45,17 @@ const App = () => {
 	const renderContent = () => {
 		if (!isFetchingData) {
 			return (
-				<React.Fragment>
+				<Container maxWidth="md" component="main" className={classes.container}>
 					<HeroUnit handleClick={handleClick} />
 					<DetailedInfo />
-				</React.Fragment>
+				</Container>
 			);
 		} else {
-			return <OffersData />;
+			return (
+				<Container maxWidth="lg" component="main" className={classes.container}>
+					<OffersData />
+				</Container>
+			);
 		}
 	};
 
@@ -60,9 +64,7 @@ const App = () => {
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
 				<Header />
-				<Container maxWidth="md" component="main" className={classes.container}>
-					{renderContent()}
-				</Container>
+				{renderContent()}
 				<Container maxWidth="sm" component="footer" className={classes.footer}>
 					<Footer />
 				</Container>

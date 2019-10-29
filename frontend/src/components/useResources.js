@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import offers from '../api/offers';
 
 const useResources = () => {
-	const [results, setResults] = useState([]);
 	const [isLoading, setLoading] = useState(false);
+	const [results, setResults] = useState([]);
 
 	const fetchResults = async () => {
 		setLoading(true);

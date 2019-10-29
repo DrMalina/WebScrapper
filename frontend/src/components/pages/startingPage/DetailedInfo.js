@@ -1,5 +1,5 @@
 import React from 'react';
-import imgBanknote from '../img/bill19zl.jpg';
+import imgBanknote from '../../../img/bill19zl.jpg';
 import { Grid, Typography, Card, CardMedia, Link } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
