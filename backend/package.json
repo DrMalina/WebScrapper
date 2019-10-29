@@ -18,6 +18,8 @@
   "homepage": "https://github.com/DrMalina/WebScrapper#readme",
   "dependencies": {
     "chalk": "^2.4.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "puppeteer": "^1.20.0"
   },
   "devDependencies": {

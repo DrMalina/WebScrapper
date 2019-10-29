@@ -112,6 +112,8 @@ class Scrapper {
             el => el.href
           );
 
+          const img = await offer.$eval("a.thumb", el => el.children[0].src);
+
           const location = await offer.$eval(
             "i[data-icon=location-filled]",
             el => el.parentNode.innerText
@@ -126,7 +128,7 @@ class Scrapper {
 
           const source = "olx";
 
-          return { title, price, url, location, date, source, type };
+          return { title, price, url, location, date, source, type, img};
         });
 
         const parsedResults = await Promise.all(offersData);
