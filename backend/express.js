@@ -11,6 +11,8 @@ app.use(cors());
 
 app.get('/offers', async (req, res) =>{
   console.log(`Request type: GET | path: /offers`);
+
+  //Init scrappers
   const allegro = new Allegro();
   const olx = new Olx();
 
