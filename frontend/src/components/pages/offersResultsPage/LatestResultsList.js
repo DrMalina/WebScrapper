@@ -9,6 +9,7 @@ import {
 	Link
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import imgPlaceholder from '../../../img/imgsPlaceholder.jpg';
 
 const useStyle = makeStyles(theme => ({
 	card: {
@@ -35,14 +36,14 @@ const LatestResultsList = ({ offers }) => {
 	return (
 		<React.Fragment>
 			<Typography variant="h6" component="h3" color="textPrimary">
-				Latest Results:
+				5 Latest Results:
 			</Typography>
 			<List>
 				{offers.map((element, index) => (
 					<ListItem key={index}>
 						<Card className={classes.card}>
 							<CardMedia
-								image={element.img}
+								image={!element.img ? imgPlaceholder : element.img}
 								title={element.title}
 								className={classes.media}
 							/>
