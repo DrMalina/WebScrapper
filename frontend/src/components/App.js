@@ -20,8 +20,7 @@ const useStyles = makeStyles(theme => ({
 		alignItems: 'center'
 	},
 	footer: {
-		position: 'absolute',
-		maxWidth: '100%',
+		width: '100%',
 		paddingBottom: theme.spacing(4),
 		marginTop: theme.spacing(6)
 	}
@@ -60,16 +59,14 @@ const App = () => {
 	};
 
 	return (
-		<React.Fragment>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<Header />
-				{renderContent()}
-				<Container maxWidth="sm" component="footer" className={classes.footer}>
-					<Footer />
-				</Container>
-			</ThemeProvider>
-		</React.Fragment>
+		<ThemeProvider theme={theme}>
+			<CssBaseline />
+			<Header />
+			{renderContent()}
+			<Container maxWidth="sm" component="footer" className={classes.footer}>
+				<Footer />
+			</Container>
+		</ThemeProvider>
 	);
 };
 
