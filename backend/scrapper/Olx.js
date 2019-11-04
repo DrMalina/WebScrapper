@@ -1,5 +1,6 @@
 const Scrapper = require("./Scrapper");
 const URL = "https://www.olx.pl/oferty/q-Banknot-19-z%C5%82/";
+const nextPageBtnQuery = "span.next > a[data-cy='page-link-next']";
 
 class Olx extends Scrapper {
   constructor() {
@@ -7,7 +8,7 @@ class Olx extends Scrapper {
   }
 
   async getResults() {
-    await super.getResults("span.next > a[data-cy='page-link-next']");
+    await super.getResults(nextPageBtnQuery);
   }
 }
 
